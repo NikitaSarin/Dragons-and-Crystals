@@ -13,15 +13,15 @@ using namespace std;
 // W   E
 //   S
 
-Room ** Model::field = nullptr;
-Player * Model::player = nullptr;
+//Room ** Model::field = nullptr;
+//Player * Model::player = nullptr;
 
 Model::Model(int m, int n) {
     width = n;
     height = m;
-    field = (Room**) malloc(sizeof(Room*) * n);
+    field = new Room*[n];
     for (int i = 0; i < width; ++i) {
-        field[i] = (Room*) malloc(sizeof(Room) * m);
+        field[i] = new Room[m];
     }
     srand(time(NULL));
     createLabyrinth();
@@ -38,20 +38,20 @@ bool Model::subscribe(View* view) {
     subscribedModels.push_back(view);
 }
 
-void Model::notifyViews(Event *e) {
-    for (View* v: subscribedModels) {
-        v->update(*e);
+void Model::notifyViews(Event e) {
+    for (auto& v: subscribedModels) {
+        v->update(e);
     }
-    delete e;
+//    delete e;
 }
 
 
 void Model::createWinEvent() {
-    notifyViews(new Event(win, OK));
+    notifyViews(Event(win, OK));
 }
 
 void Model::createLoseEvent() {
-    notifyViews(new Event(lose, OK));
+    notifyViews(Event(lose, OK));
 }
 
 void Model::createStandardEvent() {
@@ -77,53 +77,53 @@ void Model::createStandardEvent() {
     }  catch (const exception &){
         return createBadErrorEvent();
     }
-    notifyViews(new Event(standard, player->x, player->y, player->steps, playerItems, roomItems,
+    notifyViews(Event(standard, player->x, player->y, player->steps, playerItems, roomItems,
                        doors, OK));
 }
 
 void Model::createDarkroomEvent() {
-    notifyViews(new Event(darkRoom, OK));
+    notifyViews(Event(darkRoom, OK));
 }
 
 void Model::createHelpEvent() {
-    notifyViews(new Event(help, OK));
+    notifyViews(Event(help, OK));
 }
 
 void Model::createEatEvent() {
-    notifyViews(new Event(eat, OK));
+    notifyViews(Event(eat, OK));
 }
 
 
 void Model::createCommandErrorEvent() {
-    notifyViews(new Event(ERROR, CommandError));
+    notifyViews(Event(ERROR, CommandError));
 }
 
 void Model::createMoveErrorEvent() {
-    notifyViews(new Event(ERROR, MoveError));
+    notifyViews(Event(ERROR, MoveError));
 }
 
 void Model::createGetErrorEvent() {
-    notifyViews(new Event(ERROR, GetError));
+    notifyViews(Event(ERROR, GetError));
 }
 
 void Model::createDropErrorEvent() {
-    notifyViews(new Event(ERROR, DropError));
+    notifyViews(Event(ERROR, DropError));
 }
 
 void Model::createEatErrorEvent() {
-    notifyViews(new Event(ERROR, EatError));
+    notifyViews(Event(ERROR, EatError));
 }
 
 void Model::createOpenErrorEvent() {
-    notifyViews(new Event(ERROR, OpenError));
+    notifyViews(Event(ERROR, OpenError));
 }
 
 void Model::createNoKeyEvent() {
-    notifyViews(new Event(ERROR, NoKey));
+    notifyViews(Event(ERROR, NoKey));
 }
 
 void Model::createBadErrorEvent() {
-    notifyViews(new Event(ERROR, BIGERROR));
+    notifyViews(Event(ERROR, BIGERROR));
 }
 
 
@@ -325,8 +325,8 @@ int Model::getInitialCountOfSteps() {
 
 Model::~Model() {
     for (int i = 0; i < width; ++i) {
-        free(field[i]);
+        delete[] field[i];
     }
-    free(field);
+    delete[] field;
     delete player;
 }

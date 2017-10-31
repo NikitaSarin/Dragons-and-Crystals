@@ -6,7 +6,7 @@
 #include "Factory.h"
 #include "TextView.h"
 
-Factory Factory::instance = Factory();
+//Factory* Factory::instance = nullptr;//new Factory();
 Factory::Factory() {
     int m = 0;
     int n = 0;
@@ -29,7 +29,8 @@ Factory::Factory() {
 }
 
 Factory & Factory::getFactory() {
-    return Factory::instance;
+    static Factory instance;
+    return instance;
 }
 
 bool Factory::process() {
@@ -45,5 +46,7 @@ bool Factory::process() {
 
 Factory::~Factory() {
     delete controller;
+    delete model;
+    delete textview;
 }
 

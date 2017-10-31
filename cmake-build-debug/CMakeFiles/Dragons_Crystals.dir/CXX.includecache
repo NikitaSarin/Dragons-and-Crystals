@@ -27,6 +27,8 @@ Commands.h
 /home/nikita/ClionProjects/Sibers/Dragons&Crystals/Commands.h
 Model.h
 /home/nikita/ClionProjects/Sibers/Dragons&Crystals/Model.h
+memory
+-
 
 /home/nikita/ClionProjects/Sibers/Dragons&Crystals/Event.cpp
 Event.h
@@ -73,6 +75,8 @@ Room.h
 /home/nikita/ClionProjects/Sibers/Dragons&Crystals/Room.h
 Player.h
 /home/nikita/ClionProjects/Sibers/Dragons&Crystals/Player.h
+memory
+-
 
 /home/nikita/ClionProjects/Sibers/Dragons&Crystals/Player.h
 iostream

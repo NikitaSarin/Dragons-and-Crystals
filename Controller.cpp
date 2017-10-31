@@ -10,16 +10,16 @@ bool Controller::exitCode = false;
 
 Controller::Controller(Model *m) {
     model = m;
-    commands["N"] = new N();
-    commands["S"] = new S();
-    commands["W"] = new W();
-    commands["E"] = new E();
-    commands["get"] = new Get();
-    commands["drop"] = new Drop();
-    commands["open"] = new Open();
-    commands["eat"] = new Eat();
-    commands["help"] = new Help();
-    commands["exit"] = new Exit;
+    commands["N"] = unique_ptr<Commands>(new N());
+    commands["S"] = unique_ptr<Commands>(new S());
+    commands["W"] = unique_ptr<Commands>(new W());
+    commands["E"] = unique_ptr<Commands>(new E());
+    commands["get"] = unique_ptr<Commands>(new Get());
+    commands["drop"] = unique_ptr<Commands>(new Drop());
+    commands["open"] = unique_ptr<Commands>(new Open());
+    commands["eat"] = unique_ptr<Commands>(new Eat());
+    commands["help"] = unique_ptr<Commands>(new Help());
+    commands["exit"] = unique_ptr<Commands>(new Exit());
 
     model->createStandardEvent();
 }

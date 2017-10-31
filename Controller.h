@@ -5,7 +5,7 @@
 #include <map>
 #include "Commands.h"
 #include "Model.h"
-
+#include <memory>
 #ifndef DRAGONS_CRYSTALS_CONTROLLER_H
 #define DRAGONS_CRYSTALS_CONTROLLER_H
 
@@ -14,7 +14,7 @@ using namespace std;
 class Controller {
 
 private:
-    map<string, Commands*> commands;
+    map<string, unique_ptr<Commands>> commands;
     static Model* model ;
     static bool exitCode ;
 

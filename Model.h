@@ -10,6 +10,7 @@
 #include "View.h"
 #include "Room.h"
 #include "Player.h"
+#include <memory>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ class Model {
 private:
     int width = 0;
     int height = 0;
-    vector<View* > subscribedModels;
+    vector<View*> subscribedModels;
 
     void createLabyrinth();
     void createKeyAndChest();
@@ -26,8 +27,8 @@ private:
     void randomLocateItem(Items item);
 public:
     Model(int m, int n);
-    static Room **field;
-    static Player *player;
+    Room **field;
+    Player *player;
     void printLabyrinth();
 
     void createStandardEvent();
@@ -47,7 +48,7 @@ public:
     void createWinEvent();
     void createLoseEvent();
 
-    void notifyViews(Event *e);
+    void notifyViews(Event e);
     bool subscribe(View* view);
 
     int getInitialCountOfSteps();

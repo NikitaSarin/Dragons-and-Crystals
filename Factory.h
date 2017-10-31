@@ -11,12 +11,13 @@
 
 class Factory {
 private:
-    static Factory instance;
     Factory();
     Controller* controller;
     Model* model;
     TextView* textview;
 public:
+    Factory(Factory const&) = delete;
+    Factory& operator=(Factory const&) = delete;
     static Factory & getFactory();
     bool process();
     ~Factory();
