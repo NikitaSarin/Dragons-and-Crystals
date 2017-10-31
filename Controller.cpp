@@ -36,6 +36,7 @@ bool Controller::process(string str) {
     return false;
 }
 
+
 void Controller::playerWin() {
     model->createWinEvent();
     exitCode = true;
@@ -50,9 +51,6 @@ void Controller::playerLose() {
 Items Controller::stringToItem(string s) {
     if (s == "key") {
         return key;
-    }
-    if (s == "sword") {
-        return sword;
     }
     if (s == "food") {
         return food;
@@ -80,7 +78,7 @@ bool Controller::isSeeAnything() {
     return false;
 }
 
-
+//Controller does some manipulations with model and tells which event model must create
 void Controller::N::perform(string s) {
     if (model->field[model->player->x][model->player->y].Top == Close){
         model->createMoveErrorEvent();

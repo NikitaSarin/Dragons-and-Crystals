@@ -52,7 +52,7 @@ public:
     bool subscribe(View* view);
 
     int getInitialCountOfSteps();
-~Model();
+    ~Model();
 };
 
 

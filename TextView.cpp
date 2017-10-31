@@ -38,7 +38,7 @@ void TextView::update(Event e) {
             cout << "Can't move in this direction!" << endl;
             return;
         } case CommandError:{
-            cout << "Bad command! Use 'help' to get help!" << endl;
+            cout << "Incorrect command! Use 'help' to get help!" << endl;
             return;
         }
         case OpenError:{
@@ -57,9 +57,6 @@ void TextView::update(Event e) {
     switch (e.getName()){
         case standard:{
             standardEvent(e);
-            break;
-        }
-        case monsterAttack:{
             break;
         }
         case darkRoom:{
@@ -96,7 +93,7 @@ void TextView::update(Event e) {
                     "Attention! You can get only items in the current room\n"
                     "Use 'drop [item]' to throw an item away of your backpack\n"
                     "Attention! You can drop only items from your backpack\n"
-                    "Use 'eat food' to for the replenishment of vitality\n"
+                    "Use 'eat food' to the replenishment of vitality\n"
                     "Attention! You can eat only food in the current room\n"
                     "Use 'open chest' to open the chest\n"
                     "Attention! You can open the chest if you have the key\n"

@@ -12,7 +12,6 @@ using namespace std;
 
 enum Name{
     standard,
-    monsterAttack,
     darkRoom,
     eat,
     win,
@@ -26,7 +25,6 @@ enum Items{
     chest,
     torchlight,
     food,
-    sword,
     none
 };
 
@@ -71,7 +69,6 @@ inline ostream &operator<<(std::ostream &out, const Items& i) {
         case key: return (out << "key");
         case chest: return (out << "chest");
         case torchlight: return (out << "torchlight");
-        case sword: return (out << "sword");
         case food: return (out << "food");
         default: return (out);
     }

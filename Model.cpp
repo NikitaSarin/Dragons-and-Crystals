@@ -13,9 +13,6 @@ using namespace std;
 // W   E
 //   S
 
-//Room ** Model::field = nullptr;
-//Player * Model::player = nullptr;
-
 Model::Model(int m, int n) {
     width = n;
     height = m;
@@ -36,15 +33,15 @@ Model::Model(int m, int n) {
 
 bool Model::subscribe(View* view) {
     subscribedModels.push_back(view);
-}
+} // Views can subscribe to model updates
 
 void Model::notifyViews(Event e) {
     for (auto& v: subscribedModels) {
         v->update(e);
     }
-//    delete e;
-}
+} // Model creates some event and notifies views
 
+//Normal events
 
 void Model::createWinEvent() {
     notifyViews(Event(win, OK));
@@ -54,7 +51,7 @@ void Model::createLoseEvent() {
     notifyViews(Event(lose, OK));
 }
 
-void Model::createStandardEvent() {
+void Model::createStandardEvent() { // Prepare information for transmission to Views
     vector<char> doors;
     vector<Items> roomItems;
     vector<Items> playerItems;
@@ -93,6 +90,7 @@ void Model::createEatEvent() {
     notifyViews(Event(eat, OK));
 }
 
+//Error events
 
 void Model::createCommandErrorEvent() {
     notifyViews(Event(ERROR, CommandError));
@@ -124,7 +122,7 @@ void Model::createNoKeyEvent() {
 
 void Model::createBadErrorEvent() {
     notifyViews(Event(ERROR, BIGERROR));
-}
+} //If something goes wrong (exceptions)
 
 
 void Model::createDarkroom() {
@@ -139,11 +137,11 @@ void Model::createDarkroom() {
         }
         field[x][y].darkroom = true;
     }
-}
+} //Transform random rooms to darkrooms
 
 void Model::locateItem(int *x, int *y, int steps) {
     unsigned long dir;
-    //Заносим нашу ячейке в path и начинаем строить путь
+    //fill in the initial data for rooms
     stack<Room> path;
     path.push(field[*x][*y]);
     for (int i = 0; i < height; i++)
@@ -153,7 +151,7 @@ void Model::locateItem(int *x, int *y, int steps) {
 
     for (int k = 0; k < steps; ++k) {
         Room room = path.top();
-        //смотрим варианты, в какую сторону можно пойти
+        //put room in path and start building the path
         vector<Room> nextStep;
         field[room.x][room.y].Visited = true;
         if (room.Left == Open && !field[room.x - 1][room.y].Visited)
@@ -166,20 +164,19 @@ void Model::locateItem(int *x, int *y, int steps) {
             nextStep.push_back(field[room.x][room.y + 1]);
 
         if (!nextStep.empty()) {
-            //выбираем сторону из возможных вариантов
+            //choose direction from variants
             dir = rand() % nextStep.size();
             Room next = nextStep[dir];
             nextStep.erase(nextStep.begin() + dir);
             path.push(next);
         }
-            //если пойти никуда нельзя, возвращаемся к предыдущему узлу
         else {
             path.pop();
         }
     }
     *x = path.top().x;
     *y = path.top().y;
-}
+} //The item is located within 'steps' from the player
 
 void Model::randomLocateItem(Items item) {
     srand(time(NULL));
@@ -198,7 +195,7 @@ void Model::createKeyAndChest() {
 }
 
 void Model::createLabyrinth() {
-    //заполняем начальные данные для ячеек
+    //fill in the initial data for rooms
     for (int y = 0; y < height; y++)
         for (int x = 0; x < width; x++)
         {
@@ -206,13 +203,13 @@ void Model::createLabyrinth() {
             field[x][y].y = y;
         }
 
-    //Выбираем первую ячейку откуда начнем движение
+    //choose first room
     int startX = rand() % width;
     int startY = rand() % height;
 
     field[startX][startY].Visited = true;
 
-    //Заносим нашу ячейке в path и начинаем строить путь
+    //put room in path and start building the path
     stack<Room> path;
     path.push(field[startX][startY]);
 
@@ -220,7 +217,7 @@ void Model::createLabyrinth() {
     {
         Room room = path.top();
 
-        //смотрим варианты, в какую сторону можно пойти
+        //check variants
         vector<Room> nextStep;
         if (room.x > 0 && (!field[room.x - 1][room.y].Visited))
             nextStep.push_back(field[room.x - 1][room.y]);
@@ -233,10 +230,10 @@ void Model::createLabyrinth() {
 
         if (!nextStep.empty())
         {
-            //выбираем сторону из возможных вариантов
+            //choose direction from variants
             Room next = nextStep[rand() % nextStep.size()];
 
-            //Открываем сторону, в которую пошли на ячейках
+            //open doors
             if (next.x != room.x)
             {
                 if (room.x - next.x > 0)
@@ -270,7 +267,7 @@ void Model::createLabyrinth() {
         }
         else
         {
-            //если пойти никуда нельзя, возвращаемся к предыдущему узлу
+            //return to the last variant
             path.pop();
         }
     }
@@ -321,7 +318,7 @@ void Model::printLabyrinth() {
 
 int Model::getInitialCountOfSteps() {
     return width * height;
-}
+} // Return initial count of steps
 
 Model::~Model() {
     for (int i = 0; i < width; ++i) {
